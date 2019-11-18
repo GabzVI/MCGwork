@@ -1,6 +1,7 @@
-
 #include <cmath>
-
+#include "Camera.h"
+#include "Ray.h"
+#include "Trace.h"
 #include "MCG_GFX_Lib.h"
 
 
@@ -34,7 +35,7 @@ int main( int argc, char *argv[] )
 
 	// Preparing a colour to draw
 	// Colours are RGB, each value ranges between 0 and 255
-	glm::ivec3 pixelColour( 255, 0, 0 );
+	glm::ivec3 pixelColour( 0, 255, 0);
 
 
 	// Draws a single pixel at the specified coordinates in the specified colour!
@@ -69,15 +70,23 @@ int main( int argc, char *argv[] )
 		//pixelPosition.x = (windowSize.x / 2) + (int)(sin(timer) * 100.0f);
 		// Update our time variable
 		//timer += 1.0f / 60.0f;
+    Camera camera;
+    Traceray traceray;
+    
 
 
-		for (int i = 0; i < y; i++ ) 
+		for (int i = 0; i <= y; i++ ) 
 		{
-			for (int j = 0; j < x; j++) 
+			for (int j = 0; j <= x; j++) 
 			{
 				// Draw the pixel to the screen
-				glm::ivec2 pixelPosition = glm::ivec2(j, i);
+        glm::ivec2 pixelPosition = glm::ivec2(j, i); //Gets the position of the pixel
+
+        Ray raycreated = camera.Returnray(pixelPosition);  //stores the returnray inside raycreated
+        pixelColour = traceray.Raytracer(raycreated);
+
 				MCG::DrawPixel(pixelPosition, pixelColour);
+       
 			}
 		}
 		MCG::ProcessFrame();
