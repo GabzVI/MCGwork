@@ -4,15 +4,20 @@
 #include <cmath>
 #include <glm/glm.hpp>
 
-glm::vec3 Geometry::Closestpa(Ray _ray, glm::vec3 _sphereOri) {
-
-
-  return _sphereOri;
-}
-
-void Geometry::Raysphereint(Ray _ray, glm::vec3 _sphereOri, Sphere _r) {
+glm::vec3 Geometry::Closestpointonaline(Ray _ray, Sphere sphere) 
+{
+	return glm::vec3(0, 0, 0);
 
 }
-glm::vec3 Geometry::Spherenormal(glm::vec3 _sphereOri, glm::vec3 _samplep) {
-  return _samplep;
+
+void Geometry::Raysphereintercetion(Ray _ray, Sphere sphere)
+{
+
+}
+
+
+glm::vec3 Geometry::Spherenormal(Sphere sphere, glm::vec3 _samplep) 
+{
+  
+	return glm::vec3(0, 0, 0);
 }

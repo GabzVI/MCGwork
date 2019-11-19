@@ -2,7 +2,8 @@
 
 class Ray;
 
-class Camera {
+class Camera 
+{
 
 private:
 

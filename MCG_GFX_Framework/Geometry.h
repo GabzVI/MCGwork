@@ -3,13 +3,14 @@
 class Ray;
 class Sphere;
 
-class Geometry {
+class Geometry 
+{
 
 private:
-  glm::vec3 _sphereOri;
+  
 public:
-  glm::vec3 Closestpa(Ray _ray, glm::vec3 _sphereOri);
-  void Raysphereint(Ray _ray, glm::vec3 _sphereOri, Sphere _r);
-  glm::vec3 Spherenormal(glm::vec3 _sphereOri, glm::vec3 _samplep);
+  glm::vec3 Closestpointonaline(Ray _ray, Sphere sphere);
+  void Raysphereintercetion(Ray _ray, Sphere sphere);
+  glm::vec3 Spherenormal(Sphere sphere, glm::vec3 _samplep);
 
 };

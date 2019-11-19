@@ -70,8 +70,8 @@ int main( int argc, char *argv[] )
 		//pixelPosition.x = (windowSize.x / 2) + (int)(sin(timer) * 100.0f);
 		// Update our time variable
 		//timer += 1.0f / 60.0f;
-    Camera camera;
-    Traceray traceray;
+       Camera camera;
+       Traceray traceray;
     
 
 
@@ -80,10 +80,11 @@ int main( int argc, char *argv[] )
 			for (int j = 0; j <= x; j++) 
 			{
 				// Draw the pixel to the screen
-        glm::ivec2 pixelPosition = glm::ivec2(j, i); //Gets the position of the pixel
+				glm::ivec2 pixelPosition = glm::ivec2(j, i); //Gets the position of the pixel
 
-        Ray raycreated = camera.Returnray(pixelPosition);  //stores the returnray inside raycreated
-        pixelColour = traceray.Raytracer(raycreated);
+				Ray raycreated = camera.Returnray(pixelPosition);//stores the returnray inside raycreated
+				pixelColour = traceray.Raytracer(raycreated);
+				
 
 				MCG::DrawPixel(pixelPosition, pixelColour);
        

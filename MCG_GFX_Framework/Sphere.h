@@ -2,12 +2,24 @@
 
 class Ray;
 
-class Sphere {
+struct intersectResult
+{
+	bool hit;
+	float pointdistance;
+};
+
+class Sphere 
+{
 
 private:
-  float _r; //radius of sphere
-
+  float radius; //radius of sphere
+  glm::vec3 sphereOri; //Sphere Origin
 public:
-  
-  glm::ivec3 Rayintersection(Ray _ray, glm::vec3 intersectionp); 
+
+  intersectResult Rayintersection(Ray _ray);
+  void SetRadius(float _setr);
+  void SetSphereori(glm::vec3 _setsphereOri);
+  float getRadius();
+  glm::vec3 getSphereori();
+
 };

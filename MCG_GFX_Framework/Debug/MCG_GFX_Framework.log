@@ -1,8 +1,2 @@
-﻿  Geometry.cpp
-  Main.cpp
-  MCG_GFX_Lib.cpp
-  Camera.cpp
-  Sphere.cpp
-  Trace.cpp
-  Generating Code...
-  MCG_GFX_Framework.vcxproj -> C:\Users\Gabz\Documents\raytracer\New folder\MCGwork\Debug\MCG_GFX_Framework.exe
+﻿  Sphere.cpp
+  MCG_GFX_Framework.vcxproj -> H:\MCGwork\MCGwork\Debug\MCG_GFX_Framework.exe
