@@ -3,9 +3,9 @@
 #include "Sphere.h"
 #include <cmath>
 
-glm::ivec3 Traceray::Raytracer(Ray _ray, Sphere sphere) 
+glm::ivec3 Traceray::Raytracer(Ray _ray, intersectResult tmpResult) 
 {
-  ///Objs
+  
   //Sphere
   //iR
 
@@ -13,9 +13,16 @@ glm::ivec3 Traceray::Raytracer(Ray _ray, Sphere sphere)
 
   //if(iR.hit == false)
 
-  sphere.Rayintersection;
-   
-  pixelColour = glm::ivec3(255, 0, 0);
+  if (tmpResult.hit == true) 
+  {
+    pixelColour = glm::ivec3(255, 0, 0);
+  }
+  else 
+  {
+    pixelColour = glm::ivec3(0, 255, 0);
+  }
+  
+  
 
   return pixelColour;
 }

@@ -2,6 +2,8 @@
 #include "Camera.h"
 #include "Ray.h"
 #include "Trace.h"
+#include "Sphere.h"
+#include "LightSource.h"
 #include "MCG_GFX_Lib.h"
 
 
@@ -58,22 +60,27 @@ int main( int argc, char *argv[] )
 	
 	// Variable to keep track of time
 	float timer = 0.0f;
-
+  
 	// This is our game loop
 	// It will run until the user presses 'escape' or closes the window
 	while( MCG::ProcessFrame() )
 	{
-		// Set every pixel to the same colour
-	//	MCG::SetBackground( glm::ivec3( 0, 0, 0 ) );
+	     // Set every pixel to the same colour
+	     //	MCG::SetBackground( glm::ivec3( 0, 0, 0 ) );
 
-		// Change our pixel's X coordinate according to time
-		//pixelPosition.x = (windowSize.x / 2) + (int)(sin(timer) * 100.0f);
-		// Update our time variable
-		//timer += 1.0f / 60.0f;
+		   // Change our pixel's X coordinate according to time
+		   //pixelPosition.x = (windowSize.x / 2) + (int)(sin(timer) * 100.0f);
+		   // Update our time variable
+		   //timer += 1.0f / 60.0f;
        Camera camera;
        Traceray traceray;
-    
+       Sphere sphere;
+       intersectResult tmpResult;
+       LightSource light;
 
+       light.setLightpos(glm::vec3(1, 0, 0));
+       sphere.SetRadius(50);
+       sphere.SetSphereori(glm::vec3((windowSize.x/2), (windowSize.y/2), 0));
 
 		for (int i = 0; i <= y; i++ ) 
 		{
@@ -82,9 +89,13 @@ int main( int argc, char *argv[] )
 				// Draw the pixel to the screen
 				glm::ivec2 pixelPosition = glm::ivec2(j, i); //Gets the position of the pixel
 
+        
+
 				Ray raycreated = camera.Returnray(pixelPosition);//stores the returnray inside raycreated
-				pixelColour = traceray.Raytracer(raycreated);
-				
+        tmpResult = sphere.Rayintersection(raycreated);
+        //pixelColour = traceray.Raytracer(raycreated, tmpResult);
+        pixelColour = light.Diffuselighting(sphere, tmpResult) * 255.0f;
+        
 
 				MCG::DrawPixel(pixelPosition, pixelColour);
        

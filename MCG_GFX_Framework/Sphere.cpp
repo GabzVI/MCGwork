@@ -17,15 +17,21 @@ intersectResult Sphere::Rayintersection(Ray _ray)
 
 	float d = glm::length(P - a - X); //Distance between Center of sphere and X // d = (P - a - ((P-a) . n)* n)))
 
-	float x = glm::sqrt(radius * radius - (d * d)); //x = square root(radius squared - d squared)
+	float x = glm::sqrt(radius * radius - d * d); //x = square root(radius squared - d squared)
 
-	glm::vec3 sphererayintescetion = a + ((X - x)*n);
+
+	glm::vec3 sphererayintesection = a + ((X - x)*n);
+  
+  sphereNormal = glm::normalize(sphererayintesection - sphereOri);//Normalizing normal of the sphere which gives a 3d vector direction
 
 	intersectResult rtn;
+  rtn.pointdistance = d;
+  rtn.sphereintersection = sphererayintesection;
 
 	if (d <= radius) 
 	{
 		rtn.hit = true;
+    
 	}
 	else 
 	{
@@ -54,4 +60,9 @@ float Sphere::getRadius()
 glm::vec3 Sphere::getSphereori() 
 {
 	return sphereOri;
+}
+
+glm::vec3 Sphere::getSpherenormal()
+{
+  return sphereNormal;
 }
