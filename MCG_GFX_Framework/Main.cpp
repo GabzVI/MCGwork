@@ -1,4 +1,5 @@
 #include <cmath>
+#include <iostream>
 #include "Camera.h"
 #include "Ray.h"
 #include "Trace.h"
@@ -78,29 +79,29 @@ int main( int argc, char *argv[] )
        intersectResult tmpResult;
        LightSource light;
 
-       light.setLightpos(glm::vec3(1, 0, 0));
-       sphere.SetRadius(50);
+       light.setLightpos(glm::vec3(10, 0, 0));
+       sphere.SetRadius(100);
        sphere.SetSphereori(glm::vec3((windowSize.x/2), (windowSize.y/2), 0));
 
-		for (int i = 0; i <= y; i++ ) 
-		{
-			for (int j = 0; j <= x; j++) 
-			{
-				// Draw the pixel to the screen
-				glm::ivec2 pixelPosition = glm::ivec2(j, i); //Gets the position of the pixel
+	   for (int i = 0; i <= y; i++)
+	   {
+		   for (int j = 0; j <= x; j++)
+		   {
+			   // Draw the pixel to the screen
+			   glm::ivec2 pixelPosition = glm::ivec2(j, i); //Gets the position of the pixel
 
-        
 
-				Ray raycreated = camera.Returnray(pixelPosition);//stores the returnray inside raycreated
-        tmpResult = sphere.Rayintersection(raycreated);
-        //pixelColour = traceray.Raytracer(raycreated, tmpResult);
-        pixelColour = light.Diffuselighting(sphere, tmpResult) * 255.0f;
-        
 
-				MCG::DrawPixel(pixelPosition, pixelColour);
-       
-			}
-		}
+			   Ray raycreated = camera.Returnray(pixelPosition);//stores the returnray inside raycreated
+			   tmpResult = sphere.Rayintersection(raycreated);
+			   //pixelColour = traceray.Raytracer(raycreated, tmpResult);
+			   pixelColour = light.Diffuselighting(sphere, tmpResult) * 255.0f;
+
+
+			   MCG::DrawPixel(pixelPosition, pixelColour);
+
+		   }
+	   }
 		MCG::ProcessFrame();
 
 
