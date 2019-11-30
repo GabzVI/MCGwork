@@ -82,6 +82,9 @@ int main( int argc, char *argv[] )
        light.setLightpos(glm::vec3(10, 0, 0));
        sphere.SetRadius(100);
        sphere.SetSphereori(glm::vec3((windowSize.x/2), (windowSize.y/2), 0));
+       camera.setCampos(glm::vec3(0.0f, 0.0f, 0.0f));
+       camera.setCamera(glm::mat4(1.0f), glm::perspective(glm::radians(45.0f),((float)windowSize.x / (float)windowSize.y), 0.1f, 100.0f));
+
 
 	   for (int i = 0; i <= y; i++)
 	   {
@@ -102,7 +105,8 @@ int main( int argc, char *argv[] )
 
 		   }
 	   }
-		MCG::ProcessFrame();
+     std::cout << "Done drawing Sphere" << std::endl;
+		 MCG::ProcessFrame();
 
 
 	}
