@@ -1,27 +1,25 @@
 #include "Camera.h"
 #include "Ray.h"
-#include "sphere.h"
 #include <GLM/ext.hpp>
+#include <iostream>
 
 Ray Camera::Returnray(glm::ivec2 _pixelcp) 
 {
 	Ray _ray;
-	Sphere sphere;
-
-  windowSize.x = 480;
-  windowSize.y = 640;
-  
+	
   projectionMatrix = glm::perspective(glm::radians(45.0f), ((float)windowSize.x / (float)windowSize.y), 0.1f, 100.0f);
-  viewMatrix = glm::mat4(1.0f);
-  viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, 3.0f));
+  glm::mat4 mat = glm::mat4(1.0f); 
+  mat = glm::translate(mat, camPosition); //Modelmatrix of camera created
   
+  viewMatrix = glm::inverse(mat); //inverses the view modelmatrix
 
   //Map the coordinates into worldspace space
-  mapCoordinate.x = (((float)_pixelcp.x / (float)windowSize.x) * 2) * -1.0f;
-  mapCoordinate.y = (((float)_pixelcp.y / (float)windowSize.y) * 2) * -1.0f;
+  mapCoordinate.x = (((float)_pixelcp.x / (float)windowSize.x) * 2.0f)  - 1.0f;
+  mapCoordinate.y = (((float)_pixelcp.y / (float)windowSize.y) * 2.0f) - 1.0f;
 
-  nearPlane = glm::vec4(mapCoordinate.x, mapCoordinate.y, -1.0f, 1.0f);
-  farPlane = glm::vec4(mapCoordinate.x, mapCoordinate.y, 1.0f, 1.0f);
+  //setting near and far plane
+  nearPlane = glm::vec4((float)mapCoordinate.x, (float)mapCoordinate.y, -1.0f, 1.0f);
+  farPlane = glm::vec4((float)mapCoordinate.x, (float)mapCoordinate.y, 1.0f, 1.0f);
 
   //Doing the inverse of projection matrix onto planes
   nearPlane = glm::inverse(projectionMatrix) * nearPlane;
@@ -30,6 +28,9 @@ Ray Camera::Returnray(glm::ivec2 _pixelcp)
   //Applying the view matrix onto planes
   nearPlane = glm::inverse(viewMatrix) * nearPlane;
   farPlane = glm::inverse(viewMatrix) * farPlane;
+
+  nearPlane = nearPlane / nearPlane.w;
+  farPlane = farPlane / farPlane.w;
 
   //Setting new origin and direction of rays after applying inverse projection and view matrix onto planes.
   glm::vec3 newOrigin = glm::vec3(nearPlane.x, nearPlane.y, nearPlane.z);
@@ -41,24 +42,17 @@ Ray Camera::Returnray(glm::ivec2 _pixelcp)
 	return _ray;
 }
 
-
-void Camera::setCamera(glm::mat4 _view, glm::mat4 _projetction) 
+void Camera::setWindowsize(glm::ivec2 _windowSize)
 {
-  viewMatrix = _view;
-  projectionMatrix = _projetction;
+  windowSize = _windowSize;
 }
-glm::mat4 Camera::getCamera()
+glm::ivec2 Camera::getWindowsize()
 {
-  return viewMatrix, projectionMatrix;
+  return windowSize;
 }
 void Camera::setCampos(glm::vec3 camPos) 
 {
 	camPosition = camPos;
-}
-
-void Camera::setCamori(glm::vec3 camOri) 
-{
-	camOrientation = camOri;
 }
 
 glm::vec3 Camera::getCampos() 
@@ -66,7 +60,3 @@ glm::vec3 Camera::getCampos()
 	return camPosition;
 }
 
-glm::vec3 Camera::getCamori()
-{
-	return camOrientation;
-}

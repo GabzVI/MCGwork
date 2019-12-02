@@ -14,8 +14,8 @@ int main( int argc, char *argv[] )
 
 
 	// Variable for storing window dimensions
-	int x = 480;
-	int y = 640;
+	int x = 720;
+	int y = 480;
 
 
 	glm::ivec2 windowSize( x, y );
@@ -79,11 +79,12 @@ int main( int argc, char *argv[] )
        intersectResult tmpResult;
        LightSource light;
 
-       light.setLightpos(glm::vec3(10, 0, 0));
-       sphere.SetRadius(100);
-       sphere.SetSphereori(glm::vec3((windowSize.x/2), (windowSize.y/2), 0));
-       camera.setCampos(glm::vec3(0.0f, 0.0f, 0.0f));
-       camera.setCamera(glm::mat4(1.0f), glm::perspective(glm::radians(45.0f),((float)windowSize.x / (float)windowSize.y), 0.1f, 100.0f));
+       light.setLightpos(glm::vec3(10.0f, 0.0f, 0.0f));
+       sphere.SetRadius(50.0f);
+       sphere.SetSphereori(glm::vec3((windowSize.x/2), (windowSize.y/2), -20.0f));
+       camera.setWindowsize(glm::ivec2(x, y));
+       camera.setCampos(glm::vec3(200.0f, 200.0f, 0.0f));
+      
 
 
 	   for (int i = 0; i <= y; i++)

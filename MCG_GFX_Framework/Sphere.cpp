@@ -1,5 +1,6 @@
 #include "Sphere.h"
 #include "Ray.h"
+#include <iostream>
 
 
 intersectResult Sphere::Rayintersection(Ray _ray) 
@@ -31,7 +32,6 @@ intersectResult Sphere::Rayintersection(Ray _ray)
 	if (d <= radius) 
 	{
 		rtn.hit = true;
-    
 	}
 	else 
 	{
