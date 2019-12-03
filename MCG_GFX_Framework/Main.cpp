@@ -14,7 +14,7 @@ int main( int argc, char *argv[] )
 
 
 	// Variable for storing window dimensions
-	int x = 720;
+	int x = 640;
 	int y = 480;
 
 
@@ -38,7 +38,7 @@ int main( int argc, char *argv[] )
 
 	// Preparing a colour to draw
 	// Colours are RGB, each value ranges between 0 and 255
-	glm::ivec3 pixelColour( 0, 255, 0);
+	glm::vec3 pixelColour( 0, 255, 0);
 
 
 	// Draws a single pixel at the specified coordinates in the specified colour!
@@ -77,13 +77,13 @@ int main( int argc, char *argv[] )
        Traceray traceray;
        Sphere sphere;
        intersectResult tmpResult;
-       LightSource light;
+       LightSource lightpoint;
 
-       light.setLightpos(glm::vec3(10.0f, 0.0f, 0.0f));
-       sphere.SetRadius(50.0f);
-       sphere.SetSphereori(glm::vec3((windowSize.x/2), (windowSize.y/2), -20.0f));
+       lightpoint.setLightpos(glm::vec3(10.0f, 0.0f, 0.0f));
+       sphere.SetRadius(30.0f);
+       sphere.SetSphereori(glm::vec3((windowSize.x/2), (windowSize.y/2), -300.0f));
        camera.setWindowsize(glm::ivec2(x, y));
-       camera.setCampos(glm::vec3(200.0f, 200.0f, 0.0f));
+       camera.setCampos(glm::vec3(300.0f, 200.0f, 0.0f));
       
 
 
@@ -97,17 +97,18 @@ int main( int argc, char *argv[] )
 
 
 			   Ray raycreated = camera.Returnray(pixelPosition);//stores the returnray inside raycreated
-			   tmpResult = sphere.Rayintersection(raycreated);
-			   //pixelColour = traceray.Raytracer(raycreated, tmpResult);
-			   pixelColour = light.Diffuselighting(sphere, tmpResult) * 255.0f;
+         tmpResult = sphere.Rayintersection(raycreated);
+         pixelColour = traceray.Raytracer(raycreated, tmpResult, lightpoint, sphere);
+         pixelColour = pixelColour * 255.0f;
 
 
-			   MCG::DrawPixel(pixelPosition, pixelColour);
+         MCG::DrawPixel(pixelPosition, pixelColour);
 
 		   }
+       MCG::ProcessFrame();
 	   }
      std::cout << "Done drawing Sphere" << std::endl;
-		 MCG::ProcessFrame();
+     MCG::ProcessFrame();
 
 
 	}

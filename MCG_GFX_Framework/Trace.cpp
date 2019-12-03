@@ -1,25 +1,25 @@
 #include "Trace.h"
 #include "Ray.h"
 #include "Sphere.h"
+#include "LightSource.h"
+#include <iostream>
 #include <cmath>
 
-glm::ivec3 Traceray::Raytracer(Ray _ray, intersectResult tmpResult) 
+glm::vec3 Traceray::Raytracer(Ray _ray, intersectResult tmpResult, LightSource lightpoint, Sphere sphere) 
 {
-  
-  //Sphere
-  //iR
-
-  //iR = Sphere.intersect(...)
-
-  //if(iR.hit == false)
 
   if (tmpResult.hit == true) 
   {
-    pixelColour = glm::ivec3(255, 0, 0);
+    glm::vec3 dv = -tmpResult.sphereintersection + lightpoint.getLightpos(); // Gets intersectionpoint and light source position to calculate directional vector. dv
+    glm::vec3 normal = tmpResult.sphereintersection - sphere.getSphereori();
+    glm::vec3 normaldv = glm::normalize(dv); 
+    pixelColour = glm::max(glm::dot(normaldv, normal), 0.0f) * lightpoint.getSurfaceLight() * lightpoint.getLightColour();
+    std::cout << "red sphere drawn" << std::endl;
   }
   else 
   {
-    pixelColour = glm::ivec3(0, 255, 0);
+    pixelColour = glm::vec3(1, 1, 1);
+    //std::cout << "not being drawn, yellow back" << std::endl;
   }
   
   

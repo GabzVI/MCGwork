@@ -10,7 +10,7 @@ Ray Camera::Returnray(glm::ivec2 _pixelcp)
   projectionMatrix = glm::perspective(glm::radians(45.0f), ((float)windowSize.x / (float)windowSize.y), 0.1f, 100.0f);
   glm::mat4 mat = glm::mat4(1.0f); 
   mat = glm::translate(mat, camPosition); //Modelmatrix of camera created
-  
+
   viewMatrix = glm::inverse(mat); //inverses the view modelmatrix
 
   //Map the coordinates into worldspace space
@@ -25,12 +25,12 @@ Ray Camera::Returnray(glm::ivec2 _pixelcp)
   nearPlane = glm::inverse(projectionMatrix) * nearPlane;
   farPlane = glm::inverse(projectionMatrix) * farPlane;
 
+  nearPlane = nearPlane / nearPlane.w;
+  farPlane = farPlane / farPlane.w;
+
   //Applying the view matrix onto planes
   nearPlane = glm::inverse(viewMatrix) * nearPlane;
   farPlane = glm::inverse(viewMatrix) * farPlane;
-
-  nearPlane = nearPlane / nearPlane.w;
-  farPlane = farPlane / farPlane.w;
 
   //Setting new origin and direction of rays after applying inverse projection and view matrix onto planes.
   glm::vec3 newOrigin = glm::vec3(nearPlane.x, nearPlane.y, nearPlane.z);

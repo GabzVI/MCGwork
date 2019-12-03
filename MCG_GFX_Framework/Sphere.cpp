@@ -23,6 +23,7 @@ intersectResult Sphere::Rayintersection(Ray _ray)
 
 	glm::vec3 sphererayintesection = a + ((X - x)*n);
   
+
   sphereNormal = glm::normalize(sphererayintesection - sphereOri);//Normalizing normal of the sphere which gives a 3d vector direction
 
 	intersectResult rtn;
@@ -32,10 +33,12 @@ intersectResult Sphere::Rayintersection(Ray _ray)
 	if (d <= radius) 
 	{
 		rtn.hit = true;
+    std::cout << "hit sphere" << std::endl;
 	}
 	else 
 	{
 		rtn.hit = false;
+  
 	}
 	
 	return rtn;

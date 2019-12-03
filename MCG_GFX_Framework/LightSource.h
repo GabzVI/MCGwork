@@ -17,8 +17,11 @@ private:
   
 public:
 
-  glm::vec3 Diffuselighting(Sphere sphere, intersectResult result);
+  glm::vec3 Diffuselighting(Sphere sphere, intersectResult tmpResult);
   void setLightpos(glm::vec3 _setLightpos);
+  void setLightColour(glm::vec3 _lightColour);
+  void setSurfaceLight(glm::vec3 _surfaceLight);
   glm::vec3 getLightpos();
-
+  glm::vec3 getLightColour();
+  glm::vec3 getSurfaceLight();
 };

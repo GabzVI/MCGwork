@@ -1,2 +1,3 @@
-﻿  Main.cpp
-  MCG_GFX_Framework.vcxproj -> C:\Users\Gabz\Documents\raytracer\MCGwork\Debug\MCG_GFX_Framework.exe
+﻿  Trace.cpp
+c:\users\gabz\documents\raytracer\mcgwork\mcg_gfx_framework\trace.cpp(16): error C2065: 'normal': undeclared identifier
+c:\users\gabz\documents\raytracer\mcgwork\mcg_gfx_framework\trace.cpp(16): error C2672: 'glm::max': no matching overloaded function found
