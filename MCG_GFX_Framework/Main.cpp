@@ -84,7 +84,8 @@ int main( int argc, char *argv[] )
        sphere.SetSphereori(glm::vec3((windowSize.x/2), (windowSize.y/2), -300.0f));
        camera.setWindowsize(glm::ivec2(x, y));
        camera.setCampos(glm::vec3(300.0f, 200.0f, 0.0f));
-      
+       lightpoint.setLightColour(glm::vec3(1.0f, 0.0f, 0.0f));
+       lightpoint.setSurfaceLight(glm::vec3(1.0f, 0.0f, 0.0f));
 
 
 	   for (int i = 0; i <= y; i++)
@@ -99,7 +100,7 @@ int main( int argc, char *argv[] )
 			   Ray raycreated = camera.Returnray(pixelPosition);//stores the returnray inside raycreated
          tmpResult = sphere.Rayintersection(raycreated);
          pixelColour = traceray.Raytracer(raycreated, tmpResult, lightpoint, sphere);
-         pixelColour = pixelColour * 255.0f;
+         pixelColour = pixelColour * 255.0f ;
 
 
          MCG::DrawPixel(pixelPosition, pixelColour);
@@ -109,7 +110,6 @@ int main( int argc, char *argv[] )
 	   }
      std::cout << "Done drawing Sphere" << std::endl;
      MCG::ProcessFrame();
-
 
 	}
 

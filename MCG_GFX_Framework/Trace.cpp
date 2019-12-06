@@ -11,9 +11,9 @@ glm::vec3 Traceray::Raytracer(Ray _ray, intersectResult tmpResult, LightSource l
   if (tmpResult.hit == true) 
   {
     glm::vec3 dv = -tmpResult.sphereintersection + lightpoint.getLightpos(); // Gets intersectionpoint and light source position to calculate directional vector. dv
-    glm::vec3 normal = tmpResult.sphereintersection - sphere.getSphereori();
+    glm::vec3 normal = sphere.getSpherenormal();
     glm::vec3 normaldv = glm::normalize(dv); 
-    pixelColour = glm::max(glm::dot(normaldv, normal), 0.0f) * lightpoint.getSurfaceLight() * lightpoint.getLightColour();
+    pixelColour = glm::max(glm::dot(normaldv, normal), 1.0f) * glm::vec3(1.0f, 0.0f, 0.0f) * glm::vec3(1.0f, 0.0f, 0.0f);
     std::cout << "red sphere drawn" << std::endl;
   }
   else 

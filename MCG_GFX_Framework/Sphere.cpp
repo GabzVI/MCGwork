@@ -32,8 +32,7 @@ intersectResult Sphere::Rayintersection(Ray _ray)
 
 	if (d <= radius) 
 	{
-		rtn.hit = true;
-    std::cout << "hit sphere" << std::endl;
+    rtn.hit = true;
 	}
 	else 
 	{
