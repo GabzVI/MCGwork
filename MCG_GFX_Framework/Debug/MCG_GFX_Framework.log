@@ -1,2 +1,5 @@
-﻿  Trace.cpp
-  MCG_GFX_Framework.vcxproj -> C:\Users\Gabz\Documents\raytracer\MCGwork\Debug\MCG_GFX_Framework.exe
+﻿  Camera.cpp
+  Sphere.cpp
+  Trace.cpp
+  Generating Code...
+  MCG_GFX_Framework.vcxproj -> H:\MCGwork\MCGwork\Debug\MCG_GFX_Framework.exe

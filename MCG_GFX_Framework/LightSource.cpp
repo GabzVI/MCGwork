@@ -9,6 +9,7 @@ glm::vec3 LightSource::Diffuselighting(Sphere sphere, intersectResult tmpResult)
   float stepone = glm::max(glm::dot(wi, sphere.getSpherenormal()), 0.0f); //wi . N
   diffuseLight = stepone * Li  * Kd;
   
+
   return diffuseLight;
   
 }

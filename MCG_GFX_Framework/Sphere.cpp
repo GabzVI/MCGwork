@@ -5,39 +5,39 @@
 
 intersectResult Sphere::Rayintersection(Ray _ray) 
 {
-	//Variables used in the equation
-	glm::vec3 a = _ray.origin;
-	glm::vec3 P = sphereOri;
-	glm::vec3 n = _ray.direction;
+
+	intersectResult rtn;
+	
 	
 
 	//Steps of Equation
-	glm::vec3 stepone = P - a; //(P -a)
-	float steptwo = glm::dot(stepone, n); //((P-a).n)
-	glm::vec3 X = steptwo * n;//((P - a) . n) * n)
-
-	float d = glm::length(P - a - X); //Distance between Center of sphere and X // d = (P - a - ((P-a) . n)* n)))
-
-	float x = glm::sqrt(radius * radius - d * d); //x = square root(radius squared - d squared)
+	glm::vec3 pa = sphereOri - _ray.origin; //(P -a)
+	float dist = glm::length(pa); //((P-a).n)
+	float a = glm::dot(pa, glm::normalize(_ray.direction)); //((P-a).n)
 
 
-	glm::vec3 sphererayintesection = a + ((X - x)*n);
-  
+	if (dist <= radius) {
+		std::cout << "ray origin is inside sphere\n";
+		rtn.hit = false;
+		return rtn;
+	}
 
-  sphereNormal = glm::normalize(sphererayintesection - sphereOri);//Normalizing normal of the sphere which gives a 3d vector direction
+	//glm::vec3 X = steptwo * n;//((P - a) . n) * n)
 
-	intersectResult rtn;
-  rtn.pointdistance = d;
-  rtn.sphereintersection = sphererayintesection;
+	glm::vec3 dVec = pa - (a * glm::normalize(_ray.direction));
+	dist = glm::length(dVec);
 
-	if (d <= radius) 
+	if (dist <= radius) 
 	{
     rtn.hit = true;
+	float x = glm::sqrt(pow(radius, 2) - pow(dist, 2));
+	rtn.pointdistance = a - x;
+	rtn.sphereintersection = _ray.origin + (rtn.pointdistance)*(_ray.direction);
+	sphereNormal = glm::normalize(rtn.sphereintersection - sphereOri);
 	}
 	else 
 	{
-		rtn.hit = false;
-  
+		rtn.hit = false;  
 	}
 	
 	return rtn;
