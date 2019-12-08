@@ -10,7 +10,7 @@ intersectResult Sphere::Rayintersection(Ray _ray)
 	
 	
 
-	//Steps of Equation
+	//Steps of Equation for intersection of sphere
 	glm::vec3 pa = sphereOri - _ray.origin; //(P -a)
 	float dist = glm::length(pa); //((P-a).n)
 	float a = glm::dot(pa, glm::normalize(_ray.direction)); //((P-a).n)
@@ -21,8 +21,6 @@ intersectResult Sphere::Rayintersection(Ray _ray)
 		rtn.hit = false;
 		return rtn;
 	}
-
-	//glm::vec3 X = steptwo * n;//((P - a) . n) * n)
 
 	glm::vec3 dVec = pa - (a * glm::normalize(_ray.direction));
 	dist = glm::length(dVec);

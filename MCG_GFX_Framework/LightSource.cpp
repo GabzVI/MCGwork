@@ -1,18 +1,46 @@
 #include "LightSource.h"
 #include "Sphere.h"
+#include "Ray.h"
 #include <cmath>
 #include  <GLM/glm.hpp>
 
-glm::vec3 LightSource::Diffuselighting(Sphere sphere, intersectResult tmpResult)
+glm::vec3 LightSource::Diffuselight(Sphere sphere, intersectResult tmpResult)
 {
-  wi = glm::normalize(-tmpResult.sphereintersection + lightPos);
-  float stepone = glm::max(glm::dot(wi, sphere.getSpherenormal()), 0.0f); //wi . N
-  diffuseLight = stepone * Li  * Kd;
+	lightDir = glm::normalize(lightPos - tmpResult.sphereintersection);
   
+	glm::vec3 diffuseLight = glm::vec3(glm::max(glm::dot(sphere.getSpherenormal(), lightDir), 0.0f));
 
   return diffuseLight;
   
 }
+
+glm::vec3 LightSource::getSpecularLight(Ray _ray, Sphere sphere, intersectResult tmpResult)
+{
+	lightDir = glm::normalize(lightPos - tmpResult.sphereintersection);
+	
+	//specularlighting
+	glm::vec3 Ks = glm::vec3(1.0f); //Surface specular colour
+	glm::vec3 H = glm::normalize(-_ray.direction + lightDir);// H is the half vector between light direction and eye direction.
+
+	float stepone = glm::pow(glm::max(glm::dot(sphere.getSpherenormal(), H), 0.0f), shininess); //max(N 
+
+	float facing;
+
+	if (glm::dot(sphere.getSpherenormal(), lightDir) > 0)
+	{
+		facing = 1.0f;
+	}
+	else
+	{
+		facing = 0.0f;
+	}
+
+	specularLight = Ks * facing * lightColour * stepone;
+
+	return specularLight;
+}
+
+
 
 void LightSource::setLightpos(glm::vec3 _setLightpos)
 {
@@ -26,20 +54,35 @@ glm::vec3 LightSource::getLightpos()
 
 void LightSource::setLightColour(glm::vec3 _lightColour)
 {
-  Li = _lightColour;
+  lightColour = _lightColour;
 }
 
 glm::vec3 LightSource::getLightColour()
 {
-  return Li;
+  return lightColour;
 }
 
 void LightSource::setSurfaceLight(glm::vec3 _surfaceLight)
 {
-  Kd = _surfaceLight;
+  surfaceLight = _surfaceLight;
 }
 
 glm::vec3 LightSource::getSurfaceLight()
 {
-  return Kd;
+  return surfaceLight;
+}
+
+void LightSource::setAmbientLight(glm::vec3 _ambientLight) 
+{
+	ambientLight = _ambientLight;
+}
+
+glm::vec3 LightSource::getAmbientLight()
+{
+	return ambientLight;
+}
+
+void LightSource::setObjectShininess(float _shineness)
+{
+	shininess = _shineness;
 }

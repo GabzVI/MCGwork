@@ -81,12 +81,14 @@ int main(int argc, char *argv[])
 		lightpoint.setLightpos(glm::vec3(-10.0f, 0.0f, -10.0f));
 		lightpoint.setLightColour(glm::vec3(1.0f, 1.0f, 1.0f));
 		lightpoint.setSurfaceLight(glm::vec3(1.0f, 0.0f, 0.0f));
+		lightpoint.setAmbientLight(glm::vec3(0.1f));
+		lightpoint.setObjectShininess(15.0f);
 
 		sphere.SetRadius(1.0f);
 		sphere.SetSphereori(glm::vec3(0, 0, -10.0f));
 
 		camera.setWindowsize(glm::ivec2(x, y));
-		camera.setCampos(glm::vec3(0, 0, 0.0f));
+		camera.setCampos(glm::vec3(0.0f, 0.0f, 0.0f));
 
 
 		for (int i = 0; i <= y; i++)
