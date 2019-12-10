@@ -9,9 +9,31 @@
 #include "LightSource.h"
 #include "MCG_GFX_Lib.h"
 
-void thread1() 
+void thread1(Sphere sphere, Traceray traceray, intersectResult tmpResult, Camera camera, LightSource lightpoint, glm::vec3 pixelColour, int myvar, int i, int x)
 {
+	for (int k = i; k <= myvar; k++)
+	{
+
+		for (int j = 0; j <= x; j++)
+		{
+			// Draw the pixel to the screen
+			glm::ivec2 pixelPosition = glm::ivec2(j, k); //Gets the position of the pixel
+
+			Ray raycreated = camera.Returnray(pixelPosition);//stores the returnray inside raycreated
+			tmpResult = sphere.Rayintersection(raycreated);
+			pixelColour = traceray.Raytracer(raycreated, tmpResult, lightpoint, sphere);
+			pixelColour = pixelColour * 255.0f;
+
+
+			MCG::DrawPixel(pixelPosition, pixelColour);
+
+		}
+
+		MCG::ProcessFrame();
+		
+	}
 	std::cout << "I am inside this thread"<< std::endl;
+	
 }
 
 int main(int argc, char *argv[])
@@ -80,9 +102,10 @@ int main(int argc, char *argv[])
 		Camera camera;
 		Traceray traceray;
 		Sphere sphere;
-	
 		intersectResult tmpResult;
 		LightSource lightpoint;
+
+		std::thread threads[5];
 
 		lightpoint.setLightpos(glm::vec3(-10.0f, 0.0f, -10.0f));
 		lightpoint.setLightColour(glm::vec3(1.0f, 1.0f, 1.0f));
@@ -96,30 +119,39 @@ int main(int argc, char *argv[])
 		camera.setWindowsize(glm::ivec2(x, y));
 		camera.setCampos(glm::vec3(0.0f, 0.0f, 0.0f));
 
+		int myvar = y / 5;
+		int i = 0;
 
-		for (int i = 0; i <= y; i++)
+		// for loop that goes through each thread
+		for (int k = 0; k <= 5; k++)
 		{
-			for (int j = 0; j <= x; j++)
-			{
-				// Draw the pixel to the screen
-				glm::ivec2 pixelPosition = glm::ivec2(j, i); //Gets the position of the pixel
-
-				Ray raycreated = camera.Returnray(pixelPosition);//stores the returnray inside raycreated
-				tmpResult = sphere.Rayintersection(raycreated);
-				pixelColour = traceray.Raytracer(raycreated, tmpResult, lightpoint, sphere);
-				pixelColour = pixelColour * 255.0f;
-
-
-				MCG::DrawPixel(pixelPosition, pixelColour);
-				
-			}
-			MCG::ProcessFrame();
-		}
+			threads[k] = std::thread(&thread1, sphere, traceray, tmpResult, camera, lightpoint, pixelColour, myvar, i, x);
+			threads[k].join();
 	
-
+			if (k == 1) 
+			{
+				i = myvar;
+				myvar = myvar * 2;
+			}
+			if (k == 2) 
+			{
+				i = myvar * 2;
+				myvar = myvar * 3;
+			}
+			if (k == 3) 
+			{
+				i = myvar * 3;
+				myvar = myvar * 4;	
+			}
+			if (k == 4) 
+			{
+				i = myvar * 4;
+				myvar = myvar * 5;	
+			}
+		    
+		}
 		std::cout << "Done drawing Sphere" << std::endl;
 		MCG::ProcessFrame();
-
 	}
 
 
