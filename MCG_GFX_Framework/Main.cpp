@@ -1,6 +1,7 @@
 #include <cmath>
 #include <iostream>
 #include <thread>
+#include <chrono>
 #include <mutex>
 #include "Camera.h"
 #include "Ray.h"
@@ -44,7 +45,7 @@ void thread1(Sphere sphere, Traceray traceray, intersectResult tmpResult, Camera
 		
 	
 	}
-	std::cout << "I am inside this thread"<< std::endl;
+	
 	
 }
 
@@ -113,7 +114,7 @@ int main(int argc, char *argv[])
 		  //timer += 1.0f / 60.0f;
 		Camera camera;
 		Traceray traceray;
-		Sphere sphere;
+		Sphere sphere[10];
 		intersectResult tmpResult;
 		LightSource lightpoint;
 
@@ -126,8 +127,18 @@ int main(int argc, char *argv[])
 		lightpoint.setAmbientLight(glm::vec3(0.1f));
 		lightpoint.setObjectShininess(10.0f);
 
-		sphere.SetRadius(1.0f);
-		sphere.SetSphereori(glm::vec3(0.0f, 0.0f, -10.0f));
+		
+			for (int i = 0; i < 10; i++) 
+		{
+			sphere[i].SetRadius(1.0f);
+			sphere[i].SetSphereori(glm::vec3(0.0f, 0.0f, -10.0f));
+
+		}
+
+			sphere[1].SetRadius(2.0f);
+			sphere[1].SetSphereori(glm::vec3(0.0f, 0.0f, -10.0f));
+			sphere[2].SetRadius(1.0f);
+			sphere[2].SetSphereori(glm::vec3(-10.0f, 0.0f, -10.0f));
 
 		camera.setWindowsize(glm::ivec2(x, y));
 		camera.setCampos(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -136,25 +147,35 @@ int main(int argc, char *argv[])
 		float startingPoint = 0;
 		float endingPoint =  y / numOfthreads;
 		
-
+		auto start = std::chrono::high_resolution_clock::now();
 		// for loop that goes through each thread
 		for (int k = 0; k < numOfthreads; k++)
 		{
-			threads[k] = std::thread(&thread1, sphere, traceray, tmpResult, camera, lightpoint, pixelColour, startingPoint, endingPoint, x, y);
+			
 
+			threads[k] = std::thread(&thread1, sphere[k], traceray, tmpResult, camera, lightpoint, pixelColour, startingPoint, endingPoint, x, y);
+
+			
 			startingPoint = startingPoint + endingPoint;
-			std::cout << " startingPoint = " << startingPoint << std::endl;   
-		 
+
+			//std::cout << " startingPoint = " << startingPoint << std::endl;   
+			
+		
 		}
-		std::cout << "Done drawing Sphere" << std::endl;
+		
+		auto stop = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<double>elapsed = stop - start;
+		std::cout << "Time taken: " << elapsed.count() << "s\n";
 
 		for (int l = 0; l < numOfthreads; l++)
 		{
 			threads[l].join();
 		}
 
+		std::cout << "Done drawing Sphere" << std::endl;
+		
 	}
-
+	
 
 	return 0;
 
