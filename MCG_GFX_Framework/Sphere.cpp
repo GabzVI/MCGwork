@@ -8,7 +8,8 @@ intersectResult Sphere::Rayintersection(Ray _ray)
 
 	intersectResult rtn;
 	
-	
+	/* TODO: KP Debug, compare against GLM ray sphere */
+	/* TODO: https://glm.g-truc.net/0.9.5/api/a00203.html */
 
 	//Steps of Equation for intersection of sphere
 	glm::vec3 pa = sphereOri - _ray.origin; //(P -a)
