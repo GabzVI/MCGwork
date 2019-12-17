@@ -10,12 +10,12 @@
 #include "LightSource.h"
 #include "MCG_GFX_Lib.h"
 
-#define NUM_THREADS 30
 std::mutex mutex;
 
-//void thread1(int id, Sphere sphere, Traceray traceray, Camera camera, LightSource lightpoint, glm::vec3 pixelColour, float startingPoint, float endingPoint, int x, int y)
-void thread1(int id, std::vector<Sphere>& spheres, Traceray traceray, Camera camera, LightSource lightpoint, float startingPoint, float endingPoint, int x, int y)
+void thread1(int id, int count, Sphere sphere, Traceray traceray, Camera camera, LightSource lightpoint, float startingPoint, float endingPoint, int x, int y)
 {
+
+
 	for (int k = startingPoint; k <= y; k++)
 	{
 
@@ -26,35 +26,31 @@ void thread1(int id, std::vector<Sphere>& spheres, Traceray traceray, Camera cam
 			// Draw the pixel to the screen
 			glm::ivec2 pixelPosition = glm::ivec2(j, k); //Gets the position of the pixel
 
-			for(size_t si = 0; si < spheres.size(); si++)
-			{
-				Ray raycreated = camera.Returnray(pixelPosition);//stores the returnray inside raycreated
-				intersectResult tmpResult = spheres[si].Rayintersection(raycreated);
-				/* TODO: adding the values, only set color if colliding */
-				pixelColour = traceray.Raytracer(raycreated, tmpResult, lightpoint, spheres[si]);
-			}
-			
+			Ray raycreated = camera.Returnray(pixelPosition);//stores the returnray inside raycreated
+			intersectResult tmpResult = sphere.Rayintersection(raycreated);
+			pixelColour = traceray.Raytracer(raycreated, tmpResult, lightpoint, sphere);
+
 			pixelColour = pixelColour * 255.0f;
 
-			/* TODO: Try to re-engineer this to remove block for *every* thread.
-			mutex.lock();
-			MCG::DrawPixel(pixelPosition, pixelColour);
-			mutex.unlock();
-
+			if (tmpResult.hit == true)
+			{
+				mutex.lock();
+				MCG::DrawPixel(pixelPosition, pixelColour);
+				mutex.unlock();
+			}
 
 		}
 
-		if(id == 0)
+		if (id == 0)
 		{
 			mutex.lock();
 			MCG::ProcessFrame();
 			mutex.unlock();
 		}
-		
-	
+
 	}
-	
-	
+
+
 }
 
 int main(int argc, char *argv[])
@@ -116,20 +112,19 @@ int main(int argc, char *argv[])
 		// Set every pixel to the same colour
 		//	MCG::SetBackground( glm::ivec3( 0, 0, 0 ) );
 
-		  // Change our pixel's X coordinate according to time
-		  //pixelPosition.x = (windowSize.x / 2) + (int)(sin(timer) * 100.0f);
-		  // Update our time variable
-		  //timer += 1.0f / 60.0f;
+			// Change our pixel's X coordinate according to time
+			//pixelPosition.x = (windowSize.x / 2) + (int)(sin(timer) * 100.0f);
+			// Update our time variable
+			//timer += 1.0f / 60.0f;
 		Camera camera;
 		Traceray traceray;
-		Sphere sphere[10];
-
-		/* TODO: Use spheres instead */
-		std::vector<Sphere> spheres(10);
+		Sphere sphere[2];
+		intersectResult tmpResult;
 		LightSource lightpoint;
 
+
+#define NUM_THREADS 10 //Change the number to whatever amount of threads you want to have
 		std::thread threads[NUM_THREADS];
-		
 
 		lightpoint.setLightpos(glm::vec3(-10.0f, 0.0f, -10.0f));
 		lightpoint.setLightColour(glm::vec3(1.0f, 1.0f, 1.0f));
@@ -137,45 +132,42 @@ int main(int argc, char *argv[])
 		lightpoint.setAmbientLight(glm::vec3(0.1f));
 		lightpoint.setObjectShininess(10.0f);
 
-		
-			for (int i = 0; i < 10; i++) 
+
+		for (int i = 0; i < 2; i++)
 		{
 			sphere[i].SetRadius(1.0f);
 			sphere[i].SetSphereori(glm::vec3(0.0f, 0.0f, -10.0f));
-
 		}
 
-			sphere[1].SetRadius(2.0f);
-			sphere[1].SetSphereori(glm::vec3(0.0f, 0.0f, -10.0f));
-			sphere[2].SetRadius(1.0f);
-			sphere[2].SetSphereori(glm::vec3(-10.0f, 0.0f, -10.0f));
+		sphere[1].SetRadius(0.5f);
+		sphere[1].SetSphereori(glm::vec3(-1.0f, 0.0f, -10.0f));
+		sphere[2].SetRadius(0.5f);
+		sphere[2].SetSphereori(glm::vec3(1.0f, 0.0f, -10.0f));
+
 
 		camera.setWindowsize(glm::ivec2(x, y));
 		camera.setCampos(glm::vec3(0.0f, 0.0f, 0.0f));
 
-		//float numOfthreads = (sizeof(threads) / sizeof(*threads)); //Divides the data by length of array, gets the length of threads.
 		float numOfthreads = NUM_THREADS;
 		float startingPoint = 0;
-		float endingPoint =  y / numOfthreads;
-		
+		float endingPoint = y / numOfthreads;
+		int id = 0;
+		int count = 0;
+
 		auto start = std::chrono::high_resolution_clock::now();
 		// for loop that goes through each thread
 		for (int k = 0; k < numOfthreads; k++)
 		{
-			
+			count = k;
+			threads[k] = std::thread(&thread1, id, count, sphere[k], traceray, camera, lightpoint, startingPoint, endingPoint, x, y);
 
-			/* TODO: Add thread pool? */
-			//threads[k] = std::thread(&thread1, k, sphere[k], traceray, camera, lightpoint, pixelColour, startingPoint, endingPoint, x, y);
-			threads[k] = std::thread(&thread1, k, spheres, traceray, camera, lightpoint, startingPoint, endingPoint, x, y);
 
-			
 			startingPoint = startingPoint + endingPoint;
 
 			//std::cout << " startingPoint = " << startingPoint << std::endl;   
-			
-		
+
 		}
-		
+
 		auto stop = std::chrono::high_resolution_clock::now();
 		std::chrono::duration<double>elapsed = stop - start;
 		std::cout << "Time taken: " << elapsed.count() << "s\n";
@@ -186,11 +178,17 @@ int main(int argc, char *argv[])
 		}
 
 		std::cout << "Done drawing Sphere" << std::endl;
-		
+
 	}
-	
+
 
 	return 0;
 
 
 }
+
+
+
+
+
+
