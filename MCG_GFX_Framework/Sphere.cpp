@@ -1,24 +1,27 @@
 #include "Sphere.h"
 #include "Ray.h"
+#include "Camera.h"
 #include <iostream>
 
 
 intersectResult Sphere::Rayintersection(Ray _ray) 
 {
-
 	intersectResult rtn;
+	Camera camera;
 	
 	/* TODO: KP Debug, compare against GLM ray sphere */
 	/* TODO: https://glm.g-truc.net/0.9.5/api/a00203.html */
 
 	//Steps of Equation for intersection of sphere
-	glm::vec3 pa = sphereOri - _ray.origin; //(P -a)
-	float dist = glm::length(pa); //((P-a).n)
-	float a = glm::dot(pa, glm::normalize(_ray.direction)); //((P-a).n)
+	glm::vec3 pa = sphereOri - _ray.origin; 
+	float dist = glm::length(pa);
+	float a = glm::dot(pa, glm::normalize(_ray.direction)); 
 
+	rtn.distfromCameratoSphere = glm::distance(rtn.sphereintersection, camera.getCampos()); //Calculates distance between intersectionpoint of sphere and camera origin.
 
-	if (dist <= radius) {
-		std::cout << "ray origin is inside sphere\n";
+	if (dist <= radius) 
+	{
+		//std::cout << "ray origin is inside sphere\n";
 		rtn.hit = false;
 		return rtn;
 	}

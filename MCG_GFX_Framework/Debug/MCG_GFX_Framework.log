@@ -1,3 +1,5 @@
 ﻿  Main.cpp
-c:\users\gabz\documents\raytracer\mcgwork\mcg_gfx_framework\main.cpp(20): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\gabz\documents\raytracer\mcgwork\mcg_gfx_framework\main.cpp(19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  Sphere.cpp
+  Generating Code...
   MCG_GFX_Framework.vcxproj -> C:\Users\Gabz\Documents\raytracer\MCGwork\Debug\MCG_GFX_Framework.exe

@@ -32,7 +32,7 @@ void thread1(int id, int count, Sphere sphere, Traceray traceray, Camera camera,
 
 			pixelColour = pixelColour * 255.0f;
 
-			if (tmpResult.hit == true)
+			if (tmpResult.distfromCameratoSphere)
 			{
 				mutex.lock();
 				MCG::DrawPixel(pixelPosition, pixelColour);
@@ -119,11 +119,10 @@ int main(int argc, char *argv[])
 		Camera camera;
 		Traceray traceray;
 		Sphere sphere[2];
-		intersectResult tmpResult;
 		LightSource lightpoint;
 
 
-#define NUM_THREADS 10 //Change the number to whatever amount of threads you want to have
+    #define NUM_THREADS 10 //Change the number to whatever amount of threads you want to have
 		std::thread threads[NUM_THREADS];
 
 		lightpoint.setLightpos(glm::vec3(-10.0f, 0.0f, -10.0f));
@@ -158,7 +157,7 @@ int main(int argc, char *argv[])
 		// for loop that goes through each thread
 		for (int k = 0; k < numOfthreads; k++)
 		{
-			count = k;
+			count = k; 
 			threads[k] = std::thread(&thread1, id, count, sphere[k], traceray, camera, lightpoint, startingPoint, endingPoint, x, y);
 
 
